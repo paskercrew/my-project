@@ -1,0 +1,22 @@
+{
+  "SM-A145F": {"name": "Samsung Galaxy A14", "brand": "Samsung", "chipset": "Exynos 850", "ram": "4GB", "android": "13"},
+  "SM-A145M": {"name": "Samsung Galaxy A14 (LAM)", "brand": "Samsung", "chipset": "Exynos 850", "ram": "4GB", "android": "13"},
+  "SM-A546E": {"name": "Samsung Galaxy A54", "brand": "Samsung", "chipset": "Exynos 1380", "ram": "8GB", "android": "13"},
+  "SM-A736B": {"name": "Samsung Galaxy A73", "brand": "Samsung", "chipset": "Snapdragon 778G", "ram": "8GB", "android": "12"},
+  "SM-S908B": {"name": "Samsung Galaxy S22 Ultra", "brand": "Samsung", "chipset": "Exynos 2200", "ram": "12GB", "android": "12"},
+  "SM-S918B": {"name": "Samsung Galaxy S23 Ultra", "brand": "Samsung", "chipset": "Snapdragon 8 Gen 2", "ram": "12GB", "android": "13"},
+  "SM-A515F": {"name": "Samsung Galaxy A51", "brand": "Samsung", "chipset": "Exynos 9611", "ram": "4GB", "android": "10"},
+  "SM-A715F": {"name": "Samsung Galaxy A71", "brand": "Samsung", "chipset": "Snapdragon 730", "ram": "6GB", "android": "10"},
+  "M2007J20CG": {"name": "Poco X3 NFC (Global)", "brand": "POCO", "chipset": "Snapdragon 732G", "ram": "6GB", "android": "10", "codename": "surya"},
+  "M2007J20CT": {"name": "Poco X3 NFC (China)", "brand": "POCO", "chipset": "Snapdragon 732G", "ram": "6GB", "android": "10", "codename": "karna"},
+  "2201117TG": {"name": "Xiaomi 12 Pro", "brand": "Xiaomi", "chipset": "Snapdragon 8 Gen 1", "ram": "12GB", "android": "12"},
+  "M2101K6G":  {"name": "Poco X3 Pro", "brand": "POCO", "chipset": "Snapdragon 860", "ram": "6GB", "android": "11", "codename": "vayu"},
+  "M2012K11AG": {"name": "Poco X3", "brand": "POCO", "chipset": "Snapdragon 732G", "ram": "6GB", "android": "10"},
+  "2109119DG": {"name": "Xiaomi 11T Pro", "brand": "Xiaomi", "chipset": "Snapdragon 888", "ram": "8GB", "android": "11"},
+  "Pixel 6":   {"name": "Google Pixel 6", "brand": "Google", "chipset": "Tensor G1", "ram": "8GB", "android": "12"},
+  "Pixel 7 Pro":{"name": "Google Pixel 7 Pro", "brand": "Google", "chipset": "Tensor G2", "ram": "12GB", "android": "13"},
+  "CPH2423":   {"name": "OPPO Reno8 Pro", "brand": "OPPO", "chipset": "Dimensity 8100-Max", "ram": "8GB", "android": "12"},
+  "V2207":     {"name": "Vivo Y35", "brand": "Vivo", "chipset": "Snapdragon 680", "ram": "8GB", "android": "12"},
+  "RMX3363":   {"name": "Realme 9 Pro+", "brand": "Realme", "chipset": "Dimensity 920", "ram": "6GB", "android": "11"},
+  "NE2215":    {"name": "OnePlus 10 Pro", "brand": "OnePlus", "chipset": "Snapdragon 8 Gen 1", "ram": "12GB", "android": "12"}
+}
