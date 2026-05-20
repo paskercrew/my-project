@@ -1,75 +1,87 @@
 # Panduan Penggunaan Tool
 
-Repository ini berisi tiga tool forensik Android:
+Repository ini berisi tiga tool forensik Android + build script untuk membuat file `.exe` Windows.
 
 ---
 
-## 1. Android Forensic Ultra (`android_forensics.py`)
+## Cara Build File .EXE (Windows)
 
-Mirip **MOBILedit Forensic Ultra** — koneksi, dekripsi, dan ekstraksi data forensik.
+### Syarat:
+- **Python 3.10+** sudah terinstall dan ada di PATH
+- **ADB** sudah terinstall (`adb` tersedia di CMD)
 
-```bash
-python android_forensics.py              # auto-detect perangkat
-python android_forensics.py -s SERIAL   # target serial tertentu
-python android_forensics.py --skip-extract  # info saja
+### Langkah:
+
+**Cara 1 — Double-click (termudah):**
+1. Klik kanan file `build.bat` → **Run as Administrator**
+2. Tunggu sampai selesai
+3. File `.exe` muncul di folder `dist\`
+
+**Cara 2 — PowerShell:**
+```powershell
+# Klik kanan build.ps1 -> Run with PowerShell
+# atau dari terminal:
+powershell -ExecutionPolicy Bypass -File build.ps1
 ```
 
----
-
-## 2. Samsung FRP Erase Tool (`frp_erase.py`)
-
-Mirip **UnlockTool** — hapus FRP Samsung via ADB.
-
-```bash
-python frp_erase.py              # auto-detect perangkat
-python frp_erase.py -s SERIAL   # target serial tertentu
-python frp_erase.py --info-only  # baca info saja
-```
-
----
-
-## 3. Xiaomi / Poco X3 NFC ADB Tool (`xiaomi_adb.py`)
-
-Khusus untuk Xiaomi / POCO — baca info MIUI, cek Mi Account, hapus FRP, ekstraksi data.
-
-```bash
-# Baca info saja
-python xiaomi_adb.py --info-only
-
-# Hapus Google FRP + Mi Account
-python xiaomi_adb.py --hapus-frp
-
-# Ekstraksi data forensik
-python xiaomi_adb.py --ekstrak
-
-# Semua sekaligus
-python xiaomi_adb.py --hapus-frp --ekstrak -o /kasus/poco_x3
-
-# Target serial tertentu
-python xiaomi_adb.py -s RF8W90VTNGX --hapus-frp
-```
-
-### Info yang ditampilkan (Poco X3 NFC):
-- Merek, Model, Codename (`surya` / `karna`)
-- Platform / SoC (Snapdragon 732G → `sm7150`)
-- Versi MIUI & Android SDK
-- Serial, Build ID, Security Patch
-- Status Bootloader: **LOCKED / UNLOCKED**
-- Status Mi Account (aktif / tidak)
-- Status Google FRP
-- Status Root
-
-### Catatan khusus MIUI / Poco X3 NFC:
-> Di MIUI, aktifkan **USB Debugging (Security)** di
-> Pengaturan → Opsi Pengembang → USB Debugging (Security Settings)
-> agar perintah ADB bisa memodifikasi data sistem.
-
----
-
-## Instalasi
-
-```bash
+**Cara 3 — Manual satu per satu:**
+```cmd
 pip install -r requirements.txt
+pyinstaller --onefile --console --name AndroidForensicUltra android_forensics.py
+pyinstaller --onefile --console --name SamsungFRPErase frp_erase.py
+pyinstaller --onefile --console --name XiaomiADB xiaomi_adb.py
 ```
+
+### Hasil build:
+```
+dist\
+├── AndroidForensicUltra.exe   ← Mirip MOBILedit Forensic Ultra
+├── SamsungFRPErase.exe        ← Mirip UnlockTool (Samsung FRP)
+└── XiaomiADB.exe              ← Khusus Xiaomi / Poco X3 NFC
+```
+
+---
+
+## Cara Pakai EXE
+
+Buka **CMD** atau **PowerShell** di folder `dist\`, lalu:
+
+```cmd
+# Tool 1 - Android Forensic (semua merek)
+AndroidForensicUltra.exe
+AndroidForensicUltra.exe -s SERIAL_PERANGKAT
+AndroidForensicUltra.exe --skip-extract
+
+# Tool 2 - Samsung FRP Erase
+SamsungFRPErase.exe
+SamsungFRPErase.exe -s SERIAL
+SamsungFRPErase.exe --info-only
+
+# Tool 3 - Xiaomi / Poco X3 NFC
+XiaomiADB.exe --info-only
+XiaomiADB.exe --hapus-frp
+XiaomiADB.exe --ekstrak
+XiaomiADB.exe --hapus-frp --ekstrak
+```
+
+---
+
+## Install ADB di Windows
+
+1. Unduh **Platform Tools**: https://developer.android.com/studio/releases/platform-tools
+2. Ekstrak ke `C:\adb\`
+3. Tambahkan `C:\adb\` ke **PATH** Windows:
+   - Cari "Environment Variables" → Edit PATH → New → `C:\adb\`
+4. Test: buka CMD → ketik `adb version`
+
+---
+
+## Install Python di Windows
+
+1. Unduh di: https://www.python.org/downloads/
+2. Centang **"Add Python to PATH"** saat instalasi
+3. Test: buka CMD → ketik `python --version`
+
+---
 
 > **Hanya untuk pemilik sah perangkat atau teknisi resmi.**
