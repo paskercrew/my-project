@@ -1,6 +1,6 @@
 # Panduan Penggunaan Tool
 
-Repository ini berisi dua tool forensik Android:
+Repository ini berisi tiga tool forensik Android:
 
 ---
 
@@ -18,21 +18,51 @@ python android_forensics.py --skip-extract  # info saja
 
 ## 2. Samsung FRP Erase Tool (`frp_erase.py`)
 
-Mirip **UnlockTool** — hapus FRP (Factory Reset Protection) Samsung via ADB.
+Mirip **UnlockTool** — hapus FRP Samsung via ADB.
 
 ```bash
 python frp_erase.py              # auto-detect perangkat
 python frp_erase.py -s SERIAL   # target serial tertentu
-python frp_erase.py --info-only  # baca info saja, tanpa hapus FRP
+python frp_erase.py --info-only  # baca info saja
 ```
 
-### Info yang ditampilkan:
-- Model, Manufacturer, Platform, CPU Arch
-- Android Serial, Manufacturing Date, Security Patch
-- Android Version, SDK, Build ID, Build Date
-- BL / PDA / CP / CSC
-- Sales Code
-- Status root & permission
+---
+
+## 3. Xiaomi / Poco X3 NFC ADB Tool (`xiaomi_adb.py`)
+
+Khusus untuk Xiaomi / POCO — baca info MIUI, cek Mi Account, hapus FRP, ekstraksi data.
+
+```bash
+# Baca info saja
+python xiaomi_adb.py --info-only
+
+# Hapus Google FRP + Mi Account
+python xiaomi_adb.py --hapus-frp
+
+# Ekstraksi data forensik
+python xiaomi_adb.py --ekstrak
+
+# Semua sekaligus
+python xiaomi_adb.py --hapus-frp --ekstrak -o /kasus/poco_x3
+
+# Target serial tertentu
+python xiaomi_adb.py -s RF8W90VTNGX --hapus-frp
+```
+
+### Info yang ditampilkan (Poco X3 NFC):
+- Merek, Model, Codename (`surya` / `karna`)
+- Platform / SoC (Snapdragon 732G → `sm7150`)
+- Versi MIUI & Android SDK
+- Serial, Build ID, Security Patch
+- Status Bootloader: **LOCKED / UNLOCKED**
+- Status Mi Account (aktif / tidak)
+- Status Google FRP
+- Status Root
+
+### Catatan khusus MIUI / Poco X3 NFC:
+> Di MIUI, aktifkan **USB Debugging (Security)** di
+> Pengaturan → Opsi Pengembang → USB Debugging (Security Settings)
+> agar perintah ADB bisa memodifikasi data sistem.
 
 ---
 
