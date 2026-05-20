@@ -1,87 +1,117 @@
 # Panduan Penggunaan Tool
 
-Repository ini berisi tiga tool forensik Android + build script untuk membuat file `.exe` Windows.
+## Daftar Tool
+
+| File | Nama EXE | Fungsi |
+|------|----------|--------|
+| `forensic_gui.py` | `ForensicGUI.exe` | GUI mirip MOBILedit Forensic Ultra |
+| `android_forensics.py` | `AndroidForensicUltra.exe` | CLI forensik semua Android |
+| `frp_erase.py` | `SamsungFRPErase.exe` | Hapus FRP Samsung |
+| `xiaomi_adb.py` | `XiaomiADB.exe` | Info + FRP Xiaomi/POCO |
+| `edl_poco_x3.py` | `EdlPocoX3.exe` | **EDL Mode Poco X3 NFC** |
 
 ---
 
-## Cara Build File .EXE (Windows)
-
-### Syarat:
-- **Python 3.10+** sudah terinstall dan ada di PATH
-- **ADB** sudah terinstall (`adb` tersedia di CMD)
-
-### Langkah:
-
-**Cara 1 — Double-click (termudah):**
-1. Klik kanan file `build.bat` → **Run as Administrator**
-2. Tunggu sampai selesai
-3. File `.exe` muncul di folder `dist\`
-
-**Cara 2 — PowerShell:**
-```powershell
-# Klik kanan build.ps1 -> Run with PowerShell
-# atau dari terminal:
-powershell -ExecutionPolicy Bypass -File build.ps1
-```
-
-**Cara 3 — Manual satu per satu:**
-```cmd
-pip install -r requirements.txt
-pyinstaller --onefile --console --name AndroidForensicUltra android_forensics.py
-pyinstaller --onefile --console --name SamsungFRPErase frp_erase.py
-pyinstaller --onefile --console --name XiaomiADB xiaomi_adb.py
-```
-
-### Hasil build:
-```
-dist\
-├── AndroidForensicUltra.exe   ← Mirip MOBILedit Forensic Ultra
-├── SamsungFRPErase.exe        ← Mirip UnlockTool (Samsung FRP)
-└── XiaomiADB.exe              ← Khusus Xiaomi / Poco X3 NFC
-```
-
----
-
-## Cara Pakai EXE
-
-Buka **CMD** atau **PowerShell** di folder `dist\`, lalu:
+## Build Semua EXE
 
 ```cmd
-# Tool 1 - Android Forensic (semua merek)
-AndroidForensicUltra.exe
-AndroidForensicUltra.exe -s SERIAL_PERANGKAT
-AndroidForensicUltra.exe --skip-extract
-
-# Tool 2 - Samsung FRP Erase
-SamsungFRPErase.exe
-SamsungFRPErase.exe -s SERIAL
-SamsungFRPErase.exe --info-only
-
-# Tool 3 - Xiaomi / Poco X3 NFC
-XiaomiADB.exe --info-only
-XiaomiADB.exe --hapus-frp
-XiaomiADB.exe --ekstrak
-XiaomiADB.exe --hapus-frp --ekstrak
+Klik kanan build.bat -> Run as Administrator
 ```
 
 ---
 
-## Install ADB di Windows
+## EDL Tool - Poco X3 NFC (SM7150)
 
-1. Unduh **Platform Tools**: https://developer.android.com/studio/releases/platform-tools
-2. Ekstrak ke `C:\adb\`
-3. Tambahkan `C:\adb\` ke **PATH** Windows:
-   - Cari "Environment Variables" → Edit PATH → New → `C:\adb\`
-4. Test: buka CMD → ketik `adb version`
+### Cara Masuk EDL
+
+**Via ADB (termudah - USB Debugging aktif):**
+```cmd
+EdlPocoX3.exe masuk-edl --via adb
+```
+
+**Via Fastboot (BL Unlock):**
+```cmd
+EdlPocoX3.exe masuk-edl --via fastboot
+```
+
+**Via Test Point (tanpa USB Debugging):**
+1. Matikan HP
+2. Short pad TP5 ke ground di PCB
+3. Sambung USB ke PC
+4. PC deteksi `Qualcomm HS-USB QDLoader 9008`
+
+Lihat panduan lengkap:
+```cmd
+EdlPocoX3.exe test-point
+```
+
+### Cek EDL Mode
+```cmd
+EdlPocoX3.exe cek-edl
+```
+
+### Hapus FRP
+
+**Via ADB (tanpa EDL):**
+```cmd
+EdlPocoX3.exe hapus-frp
+```
+
+**Via EDL (tanpa USB Debugging - perlu programmer):**
+```cmd
+EdlPocoX3.exe hapus-frp --edl --programmer prog_firehose_ddr.elf
+```
+
+### Dump Partisi via EDL
+```cmd
+# Dump satu partisi
+EdlPocoX3.exe dump userdata --programmer prog_firehose_ddr.elf
+
+# Dump beberapa partisi
+EdlPocoX3.exe dump frp misc persist --programmer prog_firehose_ddr.elf
+
+# Dump ke folder tertentu
+EdlPocoX3.exe dump userdata -o D:\forensik --programmer prog_firehose_ddr.elf
+```
+
+### Tampilkan Info
+```cmd
+# Info perangkat + panduan EDL
+EdlPocoX3.exe info
+
+# Daftar partisi
+EdlPocoX3.exe partisi
+```
 
 ---
 
-## Install Python di Windows
+## Firehose Programmer (prog_firehose_ddr.elf)
 
-1. Unduh di: https://www.python.org/downloads/
-2. Centang **"Add Python to PATH"** saat instalasi
-3. Test: buka CMD → ketik `python --version`
+File ini diperlukan untuk operasi EDL (dump partisi, erase).
+
+**Cara mendapatkan:**
+1. Download ROM MIUI untuk Poco X3 NFC (surya)
+2. Ekstrak file `.tgz` / `.zip`
+3. Cari file `prog_firehose_ddr.elf` di folder `images/`
+4. Letakkan di folder yang sama dengan `EdlPocoX3.exe`
+
+**Sumber ROM:**
+- MIUI Official: xiaomi.eu atau miui.com
+- Codename: `surya` (Global) / `karna` (China)
 
 ---
+
+## Install edlclient (untuk operasi EDL lanjutan)
+
+```cmd
+pip install edlclient
+```
+
+Atau dari source:
+```cmd
+git clone https://github.com/bkerler/edlclient
+cd edlclient
+pip install -e .
+```
 
 > **Hanya untuk pemilik sah perangkat atau teknisi resmi.**
